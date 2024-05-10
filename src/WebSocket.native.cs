@@ -245,7 +245,13 @@ namespace WebSocketSharp
 
         static internal string directory {
             get {
-                return "./lib";
+                using (System.IO.StreamWriter outputFile = System.IO.File.AppendText("D:\\MyFiles\\KTaNEConsole.txt"))
+                {
+                    outputFile.WriteLine("Getting Current Directory");
+                    outputFile.WriteLine(System.IO.Directory.GetCurrentDirectory());
+                    outputFile.WriteLine(System.IO.Directory.GetCurrentDirectory() + "\lib");
+                }
+                return System.IO.Directory.GetCurrentDirectory() + "\lib";
                 /*using (System.IO.StreamWriter outputFile = System.IO.File.AppendText("D:\\MyFiles\\KTaNEConsole.txt"))
                 {
                     outputFile.WriteLine("Getting Directory Name");
@@ -255,9 +261,9 @@ namespace WebSocketSharp
                     outputFile.WriteLine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location));
                     outputFile.WriteLine("3");
                     outputFile.WriteLine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + "/lib");
-                }
+                }*/
 
-                return Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + "/lib";*/
+                //return Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + "/lib";
             }
         }
 
