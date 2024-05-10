@@ -248,6 +248,11 @@ namespace WebSocketSharp
                 using (System.IO.StreamWriter outputFile = System.IO.File.AppendText("D:\\MyFiles\\KTaNEConsole.txt"))
                 {
                     outputFile.WriteLine("Getting Directory Name");
+                    outputFile.WriteLine("1");
+                    outputFile.WriteLine(Assembly.GetExecutingAssembly().Location);
+                    outputFile.WriteLine("2");
+                    outputFile.WriteLine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location));
+                    outputFile.WriteLine("3");
                     outputFile.WriteLine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + "/lib");
                 }
 
