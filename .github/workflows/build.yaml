@@ -89,7 +89,6 @@ jobs:
     strategy:
       matrix:
         sys:
-          - clang32
           - clang64
 
     defaults:
