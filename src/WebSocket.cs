@@ -74,6 +74,13 @@ namespace WebSocketSharp
             debug("new (\"" + uriString + "\", " +
                   (protocols == null ? "null" : ("[" + string.Join(", ", protocols) + "]")) + ")");
             uri = new Uri(uriString);
+
+            using (System.IO.StreamWriter outputFile = System.IO.File.AppendText("D:\\MyFiles\\KTaNEConsole.txt"))
+            {
+                    outputFile.WriteLine("uriString");
+                    outputFile.WriteLine(uriString);
+            }
+
             ws = wspp_new_from(uriString, directory);
             setHandlers();
         }
