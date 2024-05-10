@@ -245,7 +245,7 @@ namespace WebSocketSharp
 
         static internal string directory {
             get {
-                return Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+                return Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location + "\\lib");
             }
         }
 
