@@ -253,8 +253,8 @@ namespace WebSocketSharp
                     outputFile.WriteLine(System.Reflection.Assembly.GetCallingAssembly());
                     outputFile.WriteLine("Getting Executing Assembly");
                     outputFile.WriteLine(System.Reflection.Assembly.GetExecutingAssembly());
-                    outputFile.WriteLine("Getting Assembly Type");
-                    outputFile.WriteLine(System.Reflection.Assembly.GetAssembly(WsppRes));
+                    //outputFile.WriteLine("Getting Assembly Type");
+                    //outputFile.WriteLine(System.Reflection.Assembly.GetAssembly(WsppRes));
                 }
                 return System.IO.Directory.GetCurrentDirectory() + "\\mods\\archipelago\\lib";
                 /*using (System.IO.StreamWriter outputFile = System.IO.File.AppendText("D:\\MyFiles\\KTaNEConsole.txt"))
