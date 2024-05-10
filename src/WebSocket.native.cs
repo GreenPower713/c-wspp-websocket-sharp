@@ -247,12 +247,14 @@ namespace WebSocketSharp
             get {
                 using (System.IO.StreamWriter outputFile = System.IO.File.AppendText("D:\\MyFiles\\KTaNEConsole.txt"))
                 {
-                    outputFile.WriteLine("Getting Entry Assembly");
-                    outputFile.WriteLine(System.Reflection.Assembly.GetEntryAssembly());
                     outputFile.WriteLine("Getting Calling Assembly");
-                    outputFile.WriteLine(System.Reflection.Assembly.GetCallingAssembly());
+                    outputFile.WriteLine(System.Reflection.Assembly.GetCallingAssembly().Location);
+                    outputFile.WriteLine(System.Reflection.Assembly.GetCallingAssembly().CodeBase);
+                    outputFile.WriteLine(System.Reflection.Assembly.GetCallingAssembly().ToString());
                     outputFile.WriteLine("Getting Executing Assembly");
-                    outputFile.WriteLine(System.Reflection.Assembly.GetExecutingAssembly());
+                    outputFile.WriteLine(System.Reflection.Assembly.GetExecutingAssembly().Location);
+                    outputFile.WriteLine(System.Reflection.Assembly.GetExecutingAssembly().CodeBase);
+                    outputFile.WriteLine(System.Reflection.Assembly.GetExecutingAssembly().ToString());
                     //outputFile.WriteLine("Getting Assembly Type");
                     //outputFile.WriteLine(System.Reflection.Assembly.GetAssembly(WsppRes));
                 }
