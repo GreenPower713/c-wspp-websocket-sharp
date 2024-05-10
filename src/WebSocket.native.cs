@@ -247,8 +247,14 @@ namespace WebSocketSharp
             get {
                 using (System.IO.StreamWriter outputFile = System.IO.File.AppendText("D:\\MyFiles\\KTaNEConsole.txt"))
                 {
-                    outputFile.WriteLine("Getting Current Directory");
-                    outputFile.WriteLine(System.Reflection.Assembly.GetExecutingAssembly().CodeBase);
+                    outputFile.WriteLine("Getting Entry Assembly");
+                    outputFile.WriteLine(System.Reflection.Assembly.GetEntryAssembly());
+                    outputFile.WriteLine("Getting Calling Assembly");
+                    outputFile.WriteLine(System.Reflection.Assembly.GetCallingAssembly());
+                    outputFile.WriteLine("Getting Executing Assembly");
+                    outputFile.WriteLine(System.Reflection.Assembly.GetExecutingAssembly());
+                    outputFile.WriteLine("Getting Assembly Type");
+                    outputFile.WriteLine(System.Reflection.Assembly.GetAssembly(WsppRes));
                 }
                 return System.IO.Directory.GetCurrentDirectory() + "\\mods\\archipelago\\lib";
                 /*using (System.IO.StreamWriter outputFile = System.IO.File.AppendText("D:\\MyFiles\\KTaNEConsole.txt"))
