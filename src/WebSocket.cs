@@ -235,6 +235,11 @@ namespace WebSocketSharp
 
         private void connect()
         {
+            using (StreamWriter outputFile = new StreamWriter("D:\\MyFiles\\KTaNEConsole.txt"))
+            {
+                outputFile.WriteLine("Connect function called");
+            }
+
             if (readyState != WebSocketState.Closed && readyState != WebSocketState.New) {
                 throw new InvalidOperationException("Invalid state: " + readyState.ToString());
             }
@@ -270,8 +275,18 @@ namespace WebSocketSharp
                 }
             }
 
+            using (StreamWriter outputFile = new StreamWriter("D:\\MyFiles\\KTaNEConsole.txt"))
+            {
+                outputFile.WriteLine("Calling function wspp_connect");
+            }
+
             debug("wspp_connect");
             wspp_connect(ws);
+
+            using (StreamWriter outputFile = new StreamWriter("D:\\MyFiles\\KTaNEConsole.txt"))
+            {
+                outputFile.WriteLine("Function wspp_connect is done");
+            }
 
             if (worker == null) {
                 // start worker after queing connect
