@@ -249,7 +249,7 @@ namespace WebSocketSharp
                 using (System.IO.StreamWriter outputFile = System.IO.File.AppendText("D:\\MyFiles\\KTaNEConsole.txt"))
                 {
                     outputFile.WriteLine("Getting Calling Assembly");
-                    var something = AppDomain.CurrentDomain.GetAssemblies().Where(a => !a.IsDynamic).Select(a => a.Location).FirstOrDefault();
+                    var something = AppDomain.CurrentDomain.GetAssemblies().Select(a => a.Location).FirstOrDefault();
                     outputFile.WriteLine(something);
                 }
                 return System.IO.Directory.GetCurrentDirectory() + "\\mods\\archipelago\\lib";
