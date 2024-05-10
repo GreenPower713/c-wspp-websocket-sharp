@@ -248,8 +248,7 @@ namespace WebSocketSharp
                 using (System.IO.StreamWriter outputFile = System.IO.File.AppendText("D:\\MyFiles\\KTaNEConsole.txt"))
                 {
                     outputFile.WriteLine("Getting Current Directory");
-                    outputFile.WriteLine(System.IO.Directory.GetCurrentDirectory());
-                    outputFile.WriteLine(System.IO.Directory.GetCurrentDirectory() + "\\mods\\archipelago\\lib");
+                    outputFile.WriteLine(typeof(WsppRes).Assembly.Location);
                 }
                 return System.IO.Directory.GetCurrentDirectory() + "\\mods\\archipelago\\lib";
                 /*using (System.IO.StreamWriter outputFile = System.IO.File.AppendText("D:\\MyFiles\\KTaNEConsole.txt"))
