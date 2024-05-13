@@ -60,6 +60,12 @@ namespace WebSocketSharp
                 }
                 if (e != null)
                 {
+                    using (System.IO.StreamWriter outputFile = System.IO.File.AppendText("D:\\MyFiles\\KTaNEConsole.txt"))
+                    {
+                        outputFile.WriteLine("From Dispatcher:");
+                        outputFile.WriteLine(e);
+                    }
+
                     if (e is MessageEventArgs)
                     {
                         if (OnMessage != null)
