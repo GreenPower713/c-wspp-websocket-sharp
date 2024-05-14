@@ -152,6 +152,11 @@ namespace WebSocketSharp
 
         private void MessageHandler(IntPtr data, ulong len, int opCode)
         {
+            using (System.IO.StreamWriter outputFile = System.IO.File.AppendText("D:\\MyFiles\\KTaNEConsole.txt"))
+            {
+                outputFile.WriteLine("IN Message Handler");
+            }
+
             debug("on Message");
 
             // ignore events that happen during shutdown of the socket
