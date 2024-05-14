@@ -56,44 +56,55 @@ namespace WebSocketSharp
             }
             while (!_stop)
             {
-                // dispatch events from here
-                EventArgs e;
-                lock(_queue)
+                try
                 {
-                    e = (_queue.Count > 0) ? _queue.Dequeue() : null;
+                    // dispatch events from here
+                    EventArgs e;
+                    lock(_queue)
+                    {
+                        e = (_queue.Count > 0) ? _queue.Dequeue() : null;
+                    }
+                    if (e != null)
+                    {
+                        using (System.IO.StreamWriter outputFile = System.IO.File.AppendText("D:\\MyFiles\\KTaNEConsole.txt"))
+                        {
+                            outputFile.WriteLine("From Dispatcher:");
+                            outputFile.WriteLine(_queue.Count.ToString() + " left.");
+                        }
+
+                        if (e is MessageEventArgs)
+                        {
+                            if (OnMessage != null)
+                                OnMessage(this, (MessageEventArgs)e);
+                        }
+                        else if (e is CloseEventArgs)
+                        {
+                            if (OnClose != null)
+                                OnClose(this, (CloseEventArgs)e);
+                        }
+                        else if (e is ErrorEventArgs)
+                        {
+                            if (OnError != null)
+                                OnError(this, (ErrorEventArgs)e);
+                        }
+                        else //if (e is OpenEventArgs)
+                        {
+                            if (OnOpen != null)
+                                OnOpen(this, e);
+                        }
+                    }
+                    else
+                    {
+                        Thread.Sleep(1);
+                    }
                 }
-                if (e != null)
+                catch (System.Exception e)
                 {
                     using (System.IO.StreamWriter outputFile = System.IO.File.AppendText("D:\\MyFiles\\KTaNEConsole.txt"))
                     {
-                        outputFile.WriteLine("From Dispatcher:");
-                        outputFile.WriteLine(_queue.Count.ToString() + " left.");
+                        outputFile.WriteLine("Exception caugth in dispacher:");
+                        outputFile.WriteLine(e.ToString());
                     }
-
-                    if (e is MessageEventArgs)
-                    {
-                        if (OnMessage != null)
-                            OnMessage(this, (MessageEventArgs)e);
-                    }
-                    else if (e is CloseEventArgs)
-                    {
-                        if (OnClose != null)
-                            OnClose(this, (CloseEventArgs)e);
-                    }
-                    else if (e is ErrorEventArgs)
-                    {
-                        if (OnError != null)
-                            OnError(this, (ErrorEventArgs)e);
-                    }
-                    else //if (e is OpenEventArgs)
-                    {
-                        if (OnOpen != null)
-                            OnOpen(this, e);
-                    }
-                }
-                else
-                {
-                    Thread.Sleep(1);
                 }
             }
             debug("stopped");
