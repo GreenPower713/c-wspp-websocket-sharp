@@ -50,10 +50,6 @@ namespace WebSocketSharp
         private void work()
         {
             debug("running");
-            using (System.IO.StreamWriter outputFile = System.IO.File.AppendText("D:\\MyFiles\\KTaNEConsole.txt"))
-            {
-                outputFile.WriteLine("Starting the Thread!");
-            }
             while (!_stop)
             {
                 try
@@ -66,12 +62,6 @@ namespace WebSocketSharp
                     }
                     if (e != null)
                     {
-                        using (System.IO.StreamWriter outputFile = System.IO.File.AppendText("D:\\MyFiles\\KTaNEConsole.txt"))
-                        {
-                            outputFile.WriteLine("From Dispatcher:");
-                            outputFile.WriteLine(_queue.Count.ToString() + " left.");
-                        }
-
                         if (e is MessageEventArgs)
                         {
                             if (OnMessage != null)
@@ -100,18 +90,10 @@ namespace WebSocketSharp
                 }
                 catch (System.Exception e)
                 {
-                    using (System.IO.StreamWriter outputFile = System.IO.File.AppendText("D:\\MyFiles\\KTaNEConsole.txt"))
-                    {
-                        outputFile.WriteLine("Exception caugth in dispacher:");
-                        outputFile.WriteLine(e.ToString());
-                    }
+
                 }
             }
             debug("stopped");
-            using (System.IO.StreamWriter outputFile = System.IO.File.AppendText("D:\\MyFiles\\KTaNEConsole.txt"))
-            {
-                outputFile.WriteLine("I broke my knee");
-            }
             _queue = null;
         }
 
@@ -144,20 +126,9 @@ namespace WebSocketSharp
 
         public void Enqueue(EventArgs e)
         {
-            using (System.IO.StreamWriter outputFile = System.IO.File.AppendText("D:\\MyFiles\\KTaNEConsole.txt"))
-            {
-                outputFile.WriteLine("IN ENQUEUE");
-            }
-
             lock (_queue)
             {
                 _queue.Enqueue(e);
-            }
-
-            using (System.IO.StreamWriter outputFile = System.IO.File.AppendText("D:\\MyFiles\\KTaNEConsole.txt"))
-            {
-                outputFile.WriteLine("After enqueue");
-                outputFile.WriteLine("Queue count:" + _queue.Count.ToString());
             }
         }
 

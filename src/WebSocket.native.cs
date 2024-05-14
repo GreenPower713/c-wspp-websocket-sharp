@@ -152,11 +152,6 @@ namespace WebSocketSharp
 
         private void MessageHandler(IntPtr data, ulong len, int opCode)
         {
-            using (System.IO.StreamWriter outputFile = System.IO.File.AppendText("D:\\MyFiles\\KTaNEConsole.txt"))
-            {
-                outputFile.WriteLine("IN Message Handler");
-            }
-
             debug("on Message");
 
             // ignore events that happen during shutdown of the socket
@@ -251,24 +246,7 @@ namespace WebSocketSharp
 
         static internal string directory {
             get {
-                using (System.IO.StreamWriter outputFile = System.IO.File.AppendText("D:\\MyFiles\\KTaNEConsole.txt"))
-                {
-                    outputFile.WriteLine("Getting Calling Assembly");
-                    //var something = AppDomain.CurrentDomain.GetAssemblies().Where(a => a.Location.EndsWith("websocket-sharp.dll")).Select(a => a.Location).FirstOrDefault();
-                    //outputFile.WriteLine(something);
-                }
                 return System.IO.Directory.GetCurrentDirectory() + "\\mods\\archipelago\\lib";
-                /*using (System.IO.StreamWriter outputFile = System.IO.File.AppendText("D:\\MyFiles\\KTaNEConsole.txt"))
-                {
-                    outputFile.WriteLine("Getting Directory Name");
-                    outputFile.WriteLine("1");
-                    outputFile.WriteLine(Assembly.GetExecutingAssembly().Location);
-                    outputFile.WriteLine("2");
-                    outputFile.WriteLine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location));
-                    outputFile.WriteLine("3");
-                    outputFile.WriteLine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + "/lib");
-                }*/
-
                 //return Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + "/lib";
             }
         }
