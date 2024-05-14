@@ -146,7 +146,7 @@ namespace WebSocketSharp
             using (System.IO.StreamWriter outputFile = System.IO.File.AppendText("D:\\MyFiles\\KTaNEConsole.txt"))
             {
                 outputFile.WriteLine("After enqueue");
-                outputFile.WriteLine("Queue count:" + _queue.Count.ToString())
+                outputFile.WriteLine("Queue count:" + _queue.Count.ToString());
             }
         }
 
