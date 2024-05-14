@@ -67,7 +67,7 @@ namespace WebSocketSharp
                     using (System.IO.StreamWriter outputFile = System.IO.File.AppendText("D:\\MyFiles\\KTaNEConsole.txt"))
                     {
                         outputFile.WriteLine("From Dispatcher:");
-                        outputFile.WriteLine(e);
+                        outputFile.WriteLine(_queue.Count.ToString() + " left.");
                     }
 
                     if (e is MessageEventArgs)
