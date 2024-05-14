@@ -52,6 +52,10 @@ namespace WebSocketSharp
             debug("running");
             while (!_stop)
             {
+                using (System.IO.StreamWriter outputFile = System.IO.File.AppendText("D:\\MyFiles\\KTaNEConsole.txt"))
+                {
+                    outputFile.WriteLine("Running around at the speed of sound");
+                }
                 // dispatch events from here
                 EventArgs e;
                 lock(_queue)
@@ -93,6 +97,10 @@ namespace WebSocketSharp
                 }
             }
             debug("stopped");
+            using (System.IO.StreamWriter outputFile = System.IO.File.AppendText("D:\\MyFiles\\KTaNEConsole.txt"))
+            {
+                outputFile.WriteLine("I broke my knee");
+            }
             _queue = null;
         }
 
