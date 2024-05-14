@@ -50,12 +50,12 @@ namespace WebSocketSharp
         private void work()
         {
             debug("running");
+            using (System.IO.StreamWriter outputFile = System.IO.File.AppendText("D:\\MyFiles\\KTaNEConsole.txt"))
+            {
+                outputFile.WriteLine("Starting the Thread!");
+            }
             while (!_stop)
             {
-                using (System.IO.StreamWriter outputFile = System.IO.File.AppendText("D:\\MyFiles\\KTaNEConsole.txt"))
-                {
-                    outputFile.WriteLine("Running around at the speed of sound");
-                }
                 // dispatch events from here
                 EventArgs e;
                 lock(_queue)
