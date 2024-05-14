@@ -125,9 +125,27 @@ namespace WebSocketSharp
 
         public void Enqueue(EventArgs e)
         {
-            lock(_queue)
+            using (System.IO.StreamWriter outputFile = System.IO.File.AppendText("D:\\MyFiles\\KTaNEConsole.txt"))
             {
+                outputFile.WriteLine("IN ENQUEUE");
+            }
+
+            lock (_queue)
+            {
+                using (System.IO.StreamWriter outputFile = System.IO.File.AppendText("D:\\MyFiles\\KTaNEConsole.txt"))
+                {
+                    outputFile.WriteLine("ENQUEUEING");
+                }
                 _queue.Enqueue(e);
+                using (System.IO.StreamWriter outputFile = System.IO.File.AppendText("D:\\MyFiles\\KTaNEConsole.txt"))
+                {
+                    outputFile.WriteLine("ENQUEUED");
+                }
+            }
+
+            using (System.IO.StreamWriter outputFile = System.IO.File.AppendText("D:\\MyFiles\\KTaNEConsole.txt"))
+            {
+                outputFile.WriteLine("After enqueue");
             }
         }
 
