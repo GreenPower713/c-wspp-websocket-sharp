@@ -246,9 +246,33 @@ namespace WebSocketSharp
 
         static internal string directory {
             get {
-                return System.IO.Directory.GetCurrentDirectory() + "\\mods\\archipelago\\lib";
+                string ktaneLocation = System.IO.Directory.GetCurrentDirectory();
+                string location = Directory.GetFiles(ktaneLocation + "\\mods");
+                string apLocation = Directory.GetFiles(location, ".*archipelago\\.dll$", SearchOption.AllDirectories).FirstOrDefault();
+                if (apLocation == null)
+                {
+                    location = GetUntil(ktaneLocation, "steamapps");
+                    if (location != String.Empty)
+                        apLocation = Directory.GetFiles(location + "steamapps\\workshop\\content\\341800", ".*archipelago\\.dll$", SearchOption.AllDirectories).FirstOrDefault();
+                }
+                string directory = new FileInfo(apLocation).Directory.FullName;
+                using (System.IO.StreamWriter outputFile = System.IO.File.AppendText("D:\\MyFiles\\KTaNEConsole.txt"))
+                {
+                    outputFile.WriteLine(directory + "\\lib");
+                }
+                return directory + "\\lib"; 
                 //return Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + "/lib";
             }
+        }
+
+        static private GetUntil(string text, string stopper)
+        {
+            if (String.IsNullOrWhiteSpace(text))
+                return String.Empty;
+            int charLocation = text.IndexOf(stopper, StringComparison.Ordinal);
+            if (charLocation < 0)
+                return String.Empty;
+            return text.Substring(0, charLocation);
         }
 
         static private void close(UIntPtr ws, ushort code, string reason)
