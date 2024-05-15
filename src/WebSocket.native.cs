@@ -247,20 +247,8 @@ namespace WebSocketSharp
         static internal string directory {
             get {
                 string ktaneLocation = System.IO.Directory.GetCurrentDirectory();
-                using (System.IO.StreamWriter outputFile = System.IO.File.AppendText("D:\\MyFiles\\KTaNEConsole.txt"))
-                {
-                    outputFile.WriteLine("ktaneLocation: " + ktaneLocation);
-                }
                 string location = ktaneLocation + "\\mods";
-                using (System.IO.StreamWriter outputFile = System.IO.File.AppendText("D:\\MyFiles\\KTaNEConsole.txt"))
-                {
-                    outputFile.WriteLine("location: " + location);
-                }
                 string apLocation = Directory.GetFiles(location, "*.*", SearchOption.AllDirectories).Where(f => f.EndsWith("archipelago.dll")).FirstOrDefault();
-                using (System.IO.StreamWriter outputFile = System.IO.File.AppendText("D:\\MyFiles\\KTaNEConsole.txt"))
-                {
-                    outputFile.WriteLine("apLocation: " + apLocation);
-                }
                 if (apLocation == null)
                 {
                     location = GetUntil(ktaneLocation, "steamapps");
@@ -268,10 +256,6 @@ namespace WebSocketSharp
                         apLocation = Directory.GetFiles(location, "*.*", SearchOption.AllDirectories).Where(f => f.EndsWith("archipelago.dll")).FirstOrDefault();
                 }
                 string directory = new FileInfo(apLocation).Directory.FullName;
-                using (System.IO.StreamWriter outputFile = System.IO.File.AppendText("D:\\MyFiles\\KTaNEConsole.txt"))
-                {
-                    outputFile.WriteLine(directory + "\\lib");
-                }
                 return directory + "\\lib"; 
                 //return Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + "/lib";
             }
