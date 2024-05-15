@@ -247,8 +247,20 @@ namespace WebSocketSharp
         static internal string directory {
             get {
                 string ktaneLocation = System.IO.Directory.GetCurrentDirectory();
+                using (System.IO.StreamWriter outputFile = System.IO.File.AppendText("D:\\MyFiles\\KTaNEConsole.txt"))
+                {
+                    outputFile.WriteLine("ktaneLocation: " + ktaneLocation);
+                }
                 string location = ktaneLocation + "\\mods";
+                using (System.IO.StreamWriter outputFile = System.IO.File.AppendText("D:\\MyFiles\\KTaNEConsole.txt"))
+                {
+                    outputFile.WriteLine("location: " + location);
+                }
                 string apLocation = Directory.GetFiles(location, ".*archipelago\\.dll$", SearchOption.AllDirectories).FirstOrDefault();
+                using (System.IO.StreamWriter outputFile = System.IO.File.AppendText("D:\\MyFiles\\KTaNEConsole.txt"))
+                {
+                    outputFile.WriteLine("apLocation: " + apLocation);
+                }
                 if (apLocation == null)
                 {
                     location = GetUntil(ktaneLocation, "steamapps");
