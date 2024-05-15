@@ -248,7 +248,7 @@ namespace WebSocketSharp
             get {
                 string ktaneLocation = System.IO.Directory.GetCurrentDirectory();
                 string location = ktaneLocation + "\\mods";
-                string apLocation == null;
+                string apLocation = null;
                 try
                 {
                     apLocation = Directory.GetFiles(location, "*.*", SearchOption.AllDirectories).Where(f => f.EndsWith("archipelago.dll")).FirstOrDefault();
