@@ -265,7 +265,7 @@ namespace WebSocketSharp
             }
         }
 
-        static private GetUntil(string text, string stopper)
+        static private string GetUntil(string text, string stopper)
         {
             if (String.IsNullOrWhiteSpace(text))
                 return String.Empty;
