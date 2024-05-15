@@ -247,7 +247,7 @@ namespace WebSocketSharp
         static internal string directory {
             get {
                 string ktaneLocation = System.IO.Directory.GetCurrentDirectory();
-                string location = Directory.GetFiles(ktaneLocation + "\\mods");
+                string location = ktaneLocation + "\\mods";
                 string apLocation = Directory.GetFiles(location, ".*archipelago\\.dll$", SearchOption.AllDirectories).FirstOrDefault();
                 if (apLocation == null)
                 {
@@ -267,7 +267,7 @@ namespace WebSocketSharp
 
         static private string GetUntil(string text, string stopper)
         {
-            if (String.IsNullOrWhiteSpace(text))
+            if (text == String.Empty;)
                 return String.Empty;
             int charLocation = text.IndexOf(stopper, StringComparison.Ordinal);
             if (charLocation < 0)
