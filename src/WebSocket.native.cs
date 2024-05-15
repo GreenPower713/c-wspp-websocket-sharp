@@ -256,7 +256,7 @@ namespace WebSocketSharp
                 {
                     outputFile.WriteLine("location: " + location);
                 }
-                string apLocation = Directory.GetFiles(location, ".*archipelago\\.dll$", SearchOption.AllDirectories).FirstOrDefault();
+                string apLocation = Directory.GetFiles(location, "*.*", SearchOption.AllDirectories).Where(f => f.EndsWith("archipelago.dll")).FirstOrDefault();
                 using (System.IO.StreamWriter outputFile = System.IO.File.AppendText("D:\\MyFiles\\KTaNEConsole.txt"))
                 {
                     outputFile.WriteLine("apLocation: " + apLocation);
@@ -265,7 +265,7 @@ namespace WebSocketSharp
                 {
                     location = GetUntil(ktaneLocation, "steamapps");
                     if (location != String.Empty)
-                        apLocation = Directory.GetFiles(location + "steamapps\\workshop\\content\\341800", ".*archipelago\\.dll$", SearchOption.AllDirectories).FirstOrDefault();
+                        apLocation = Directory.GetFiles(location, "*.*", SearchOption.AllDirectories).Where(f => f.EndsWith("archipelago.dll")).FirstOrDefault();
                 }
                 string directory = new FileInfo(apLocation).Directory.FullName;
                 using (System.IO.StreamWriter outputFile = System.IO.File.AppendText("D:\\MyFiles\\KTaNEConsole.txt"))
