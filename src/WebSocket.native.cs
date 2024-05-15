@@ -267,7 +267,7 @@ namespace WebSocketSharp
 
         static private string GetUntil(string text, string stopper)
         {
-            if (text == String.Empty;)
+            if (text == String.Empty)
                 return String.Empty;
             int charLocation = text.IndexOf(stopper, StringComparison.Ordinal);
             if (charLocation < 0)
