@@ -248,7 +248,12 @@ namespace WebSocketSharp
             get {
                 string ktaneLocation = System.IO.Directory.GetCurrentDirectory();
                 string location = ktaneLocation + "\\mods";
-                string apLocation = Directory.GetFiles(location, "*.*", SearchOption.AllDirectories).Where(f => f.EndsWith("archipelago.dll")).FirstOrDefault();
+                try
+                {
+                    string apLocation = Directory.GetFiles(location, "*.*", SearchOption.AllDirectories).Where(f => f.EndsWith("archipelago.dll")).FirstOrDefault();
+                }
+                catch (System.Exception e) { } //if the mod folder doesn't exist, it should try to get it from the workshop instead
+
                 if (apLocation == null)
                 {
                     location = GetUntil(ktaneLocation, "steamapps");
