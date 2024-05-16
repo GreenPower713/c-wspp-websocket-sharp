@@ -262,6 +262,11 @@ namespace WebSocketSharp
                 try
                 {
                     apLocation = Directory.GetFiles(location, "*.*", SearchOption.AllDirectories).Where(f => f.EndsWith("archipelago.dll")).FirstOrDefault();
+                    using (System.IO.StreamWriter outputFile = System.IO.File.AppendText("/home/rj/log.txt"))
+                    {
+                        outputFile.WriteLine("apLocation: " + apLocation);
+                        outputFile.WriteLine(Directory.Exists(apLocation));
+                    }
                 }
                 catch (System.Exception e) { } //if the mod folder doesn't exist, it should try to get it from the workshop instead
 
