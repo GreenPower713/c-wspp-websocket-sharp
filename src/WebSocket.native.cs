@@ -247,12 +247,13 @@ namespace WebSocketSharp
         static internal string directory {
             get {
                 string ktaneLocation = System.IO.Directory.GetCurrentDirectory();
+                var dsc = Char.ToString(Path.DirectorySeparatorChar);
                 using (System.IO.StreamWriter outputFile = System.IO.File.AppendText("/home/rj/log.txt"))
                 {
                     outputFile.WriteLine("ktaneLocation: " + ktaneLocation);
                     outputFile.WriteLine(Directory.Exists(ktaneLocation));
                 }
-                string location = ktaneLocation + "\\mods";
+                string location = ktaneLocation + dsc + "mods";
                 using (System.IO.StreamWriter outputFile = System.IO.File.AppendText("/home/rj/log.txt"))
                 {
                     outputFile.WriteLine("location: " + location);
@@ -272,12 +273,12 @@ namespace WebSocketSharp
 
                 if (apLocation == null)
                 {
-                    location = GetUntil(ktaneLocation, "steamapps") + "\\steamapps\\workshop\\content\\341800";
+                    location = GetUntil(ktaneLocation, "steamapps") + "steamapps" + dsc + "workshop" + dsc + "content" + dsc + "341800";
                     if (location != String.Empty)
                         apLocation = Directory.GetFiles(location, "*.*", SearchOption.AllDirectories).Where(f => f.EndsWith("archipelago.dll")).FirstOrDefault();
                 }
                 string directory = new FileInfo(apLocation).Directory.FullName;
-                return directory + "\\lib"; 
+                return directory + dsc + "lib"; 
                 //return Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + "/lib";
             }
         }
