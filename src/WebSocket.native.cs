@@ -248,26 +248,11 @@ namespace WebSocketSharp
             get {
                 string ktaneLocation = System.IO.Directory.GetCurrentDirectory();
                 var dsc = Char.ToString(Path.DirectorySeparatorChar);
-                using (System.IO.StreamWriter outputFile = System.IO.File.AppendText("/home/rj/log.txt"))
-                {
-                    outputFile.WriteLine("ktaneLocation: " + ktaneLocation);
-                    outputFile.WriteLine(Directory.Exists(ktaneLocation));
-                }
                 string location = ktaneLocation + dsc + "mods";
-                using (System.IO.StreamWriter outputFile = System.IO.File.AppendText("/home/rj/log.txt"))
-                {
-                    outputFile.WriteLine("location: " + location);
-                    outputFile.WriteLine(Directory.Exists(location));
-                }
                 string apLocation = null;
                 try
                 {
                     apLocation = Directory.GetFiles(location, "*.*", SearchOption.AllDirectories).Where(f => f.EndsWith("archipelago.dll")).FirstOrDefault();
-                    using (System.IO.StreamWriter outputFile = System.IO.File.AppendText("/home/rj/log.txt"))
-                    {
-                        outputFile.WriteLine("apLocation: " + apLocation);
-                        outputFile.WriteLine(Directory.Exists(apLocation));
-                    }
                 }
                 catch (System.Exception e) { } //if the mod folder doesn't exist, it should try to get it from the workshop instead
 
@@ -278,6 +263,11 @@ namespace WebSocketSharp
                         apLocation = Directory.GetFiles(location, "*.*", SearchOption.AllDirectories).Where(f => f.EndsWith("archipelago.dll")).FirstOrDefault();
                 }
                 string directory = new FileInfo(apLocation).Directory.FullName;
+                using (System.IO.StreamWriter outputFile = System.IO.File.AppendText("/home/rj/log.txt"))
+                {
+                    outputFile.WriteLine("directory: " + directory);
+                    outputFile.WriteLine(directory + dsc + "lib");
+                }
                 return directory + dsc + "lib"; 
                 //return Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + "/lib";
             }
