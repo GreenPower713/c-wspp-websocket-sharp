@@ -40,6 +40,21 @@ namespace WebSocketSharp
     #   error "Please define an OS_* macro"
     #endif
 
+        public string dll_file
+        {
+            get
+            {
+                if (System.Environment.OSVersion.Platform == System.PlatformID.Win32NT)
+                {
+                    return "c-wspp.dll";
+                }
+                else
+                {
+                    return "c-wspp.so";
+                }
+            }
+        }
+
         [UnmanagedFunctionPointer(CALLING_CONVENTION)]
         internal delegate void OnMessageCallback(IntPtr data, ulong len, int opCode);
         [UnmanagedFunctionPointer(CALLING_CONVENTION)]
@@ -51,35 +66,35 @@ namespace WebSocketSharp
         [UnmanagedFunctionPointer(CALLING_CONVENTION)]
         internal delegate void OnPongCallback(IntPtr data, ulong len);
 
-        [DllImport(DLL_NAME, CharSet=CharSet.Ansi, CallingConvention=CALLING_CONVENTION)]
+        [DllImport(dll_file, CharSet=CharSet.Ansi, CallingConvention=CALLING_CONVENTION)]
         internal static extern UIntPtr wspp_new(IntPtr uri);
-        [DllImport(DLL_NAME, CallingConvention=CALLING_CONVENTION)]
+        [DllImport(dll_file, CallingConvention=CALLING_CONVENTION)]
         internal static extern void wspp_delete(UIntPtr ws);
-        [DllImport(DLL_NAME, CallingConvention=CALLING_CONVENTION)]
+        [DllImport(dll_file, CallingConvention=CALLING_CONVENTION)]
         internal static extern ulong wspp_poll(UIntPtr ws);
-        [DllImport(DLL_NAME, CallingConvention=CALLING_CONVENTION)]
+        [DllImport(dll_file, CallingConvention=CALLING_CONVENTION)]
         internal static extern ulong wspp_run(UIntPtr ws);
-        [DllImport(DLL_NAME, CallingConvention=CALLING_CONVENTION)]
+        [DllImport(dll_file, CallingConvention=CALLING_CONVENTION)]
         internal static extern bool wspp_stopped(UIntPtr ws);
-        [DllImport(DLL_NAME, CallingConvention=CALLING_CONVENTION)]
+        [DllImport(dll_file, CallingConvention=CALLING_CONVENTION)]
         internal static extern int wspp_connect(UIntPtr ws);
-        [DllImport(DLL_NAME, CallingConvention=CALLING_CONVENTION)]
+        [DllImport(dll_file, CallingConvention=CALLING_CONVENTION)]
         internal static extern int wspp_close(UIntPtr ws, ushort code, IntPtr reason);
-        [DllImport(DLL_NAME, CallingConvention=CALLING_CONVENTION)]
+        [DllImport(dll_file, CallingConvention=CALLING_CONVENTION)]
         internal static extern int wspp_send_text(UIntPtr ws, IntPtr message);
-        [DllImport(DLL_NAME, CallingConvention=CALLING_CONVENTION)]
+        [DllImport(dll_file, CallingConvention=CALLING_CONVENTION)]
         internal static extern int wspp_send_binary(UIntPtr ws, byte[] data, ulong len);
-        [DllImport(DLL_NAME, CallingConvention=CALLING_CONVENTION)]
+        [DllImport(dll_file, CallingConvention=CALLING_CONVENTION)]
         internal static extern int wspp_ping(UIntPtr ws, byte[] data, ulong len);
-        [DllImport(DLL_NAME, CallingConvention=CALLING_CONVENTION)]
+        [DllImport(dll_file, CallingConvention=CALLING_CONVENTION)]
         internal static extern void wspp_set_open_handler(UIntPtr ws, OnOpenCallback f);
-        [DllImport(DLL_NAME, CallingConvention=CALLING_CONVENTION)]
+        [DllImport(dll_file, CallingConvention=CALLING_CONVENTION)]
         internal static extern void wspp_set_close_handler(UIntPtr ws, OnCloseCallback f);
-        [DllImport(DLL_NAME, CallingConvention=CALLING_CONVENTION)]
+        [DllImport(dll_file, CallingConvention=CALLING_CONVENTION)]
         internal static extern void wspp_set_message_handler(UIntPtr ws, OnMessageCallback f);
-        [DllImport(DLL_NAME, CallingConvention=CALLING_CONVENTION)]
+        [DllImport(dll_file, CallingConvention=CALLING_CONVENTION)]
         internal static extern void wspp_set_error_handler(UIntPtr ws, OnErrorCallback f);
-        [DllImport(DLL_NAME, CallingConvention=CALLING_CONVENTION)]
+        [DllImport(dll_file, CallingConvention=CALLING_CONVENTION)]
         internal static extern void wspp_set_pong_handler(UIntPtr ws, OnPongCallback f);
 
         // NOTE: currently we do string -> UTF8 in C#, but it might be better to change that.
@@ -236,7 +251,7 @@ namespace WebSocketSharp
         /// </summary>
         static private UIntPtr wspp_new_from(string uriString, string dllDirectory)
         {
-            sdebug("wspp_new(\"" + uriString + "\") in " + DLL_NAME + " from " + dllDirectory);
+            sdebug("wspp_new(\"" + uriString + "\") in " + dll_file + " from " + dllDirectory);
 
             using (DllDirectory.Context(dllDirectory))
             {
@@ -263,11 +278,6 @@ namespace WebSocketSharp
                         apLocation = Directory.GetFiles(location, "*.*", SearchOption.AllDirectories).Where(f => f.EndsWith("archipelago.dll")).FirstOrDefault();
                 }
                 string directory = new FileInfo(apLocation).Directory.FullName;
-                using (System.IO.StreamWriter outputFile = System.IO.File.AppendText("/home/rj/log.txt"))
-                {
-                    outputFile.WriteLine("directory: " + directory);
-                    outputFile.WriteLine(directory + dsc + "lib");
-                }
                 return directory + dsc + "lib"; 
                 //return Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + "/lib";
             }
