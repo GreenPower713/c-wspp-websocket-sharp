@@ -40,7 +40,7 @@ namespace WebSocketSharp
     #   error "Please define an OS_* macro"
     #endif
 
-        internal static string dll_file
+        internal static readonly string dll_file
         {
             get
             {
