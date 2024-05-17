@@ -40,8 +40,12 @@ namespace WebSocketSharp
     #   error "Please define an OS_* macro"
     #endif
 
-        internal static readonly string dll_file
+        internal static readonly string[] dll_file = new string[]
         {
+            "c-wspp.dll",
+            "c-wspp.so"
+        }
+        /*{
             get
             {
                 if (System.Environment.OSVersion.Platform == System.PlatformID.Win32NT)
@@ -53,7 +57,7 @@ namespace WebSocketSharp
                     return "c-wspp.so";
                 }
             }
-        }
+        }*/
 
         [UnmanagedFunctionPointer(CALLING_CONVENTION)]
         internal delegate void OnMessageCallback(IntPtr data, ulong len, int opCode);
@@ -66,35 +70,35 @@ namespace WebSocketSharp
         [UnmanagedFunctionPointer(CALLING_CONVENTION)]
         internal delegate void OnPongCallback(IntPtr data, ulong len);
 
-        [DllImport(dll_file, CharSet=CharSet.Ansi, CallingConvention=CALLING_CONVENTION)]
+        [DllImport(dll_file[System.Environment.OSVersion.Platform == System.PlatformID.Win32NT ? 0: 1], CharSet=CharSet.Ansi, CallingConvention=CALLING_CONVENTION)]
         internal static extern UIntPtr wspp_new(IntPtr uri);
-        [DllImport(dll_file, CallingConvention=CALLING_CONVENTION)]
+        [DllImport(dll_file[System.Environment.OSVersion.Platform == System.PlatformID.Win32NT ? 0 : 1], CallingConvention=CALLING_CONVENTION)]
         internal static extern void wspp_delete(UIntPtr ws);
-        [DllImport(dll_file, CallingConvention=CALLING_CONVENTION)]
+        [DllImport(dll_file[System.Environment.OSVersion.Platform == System.PlatformID.Win32NT ? 0 : 1], CallingConvention=CALLING_CONVENTION)]
         internal static extern ulong wspp_poll(UIntPtr ws);
-        [DllImport(dll_file, CallingConvention=CALLING_CONVENTION)]
+        [DllImport(dll_file[System.Environment.OSVersion.Platform == System.PlatformID.Win32NT ? 0 : 1], CallingConvention=CALLING_CONVENTION)]
         internal static extern ulong wspp_run(UIntPtr ws);
-        [DllImport(dll_file, CallingConvention=CALLING_CONVENTION)]
+        [DllImport(dll_file[System.Environment.OSVersion.Platform == System.PlatformID.Win32NT ? 0 : 1], CallingConvention=CALLING_CONVENTION)]
         internal static extern bool wspp_stopped(UIntPtr ws);
-        [DllImport(dll_file, CallingConvention=CALLING_CONVENTION)]
+        [DllImport(dll_file[System.Environment.OSVersion.Platform == System.PlatformID.Win32NT ? 0 : 1], CallingConvention=CALLING_CONVENTION)]
         internal static extern int wspp_connect(UIntPtr ws);
-        [DllImport(dll_file, CallingConvention=CALLING_CONVENTION)]
+        [DllImport(dll_file[System.Environment.OSVersion.Platform == System.PlatformID.Win32NT ? 0 : 1], CallingConvention=CALLING_CONVENTION)]
         internal static extern int wspp_close(UIntPtr ws, ushort code, IntPtr reason);
-        [DllImport(dll_file, CallingConvention=CALLING_CONVENTION)]
+        [DllImport(dll_file[System.Environment.OSVersion.Platform == System.PlatformID.Win32NT ? 0 : 1], CallingConvention=CALLING_CONVENTION)]
         internal static extern int wspp_send_text(UIntPtr ws, IntPtr message);
-        [DllImport(dll_file, CallingConvention=CALLING_CONVENTION)]
+        [DllImport(dll_file[System.Environment.OSVersion.Platform == System.PlatformID.Win32NT ? 0 : 1], CallingConvention=CALLING_CONVENTION)]
         internal static extern int wspp_send_binary(UIntPtr ws, byte[] data, ulong len);
-        [DllImport(dll_file, CallingConvention=CALLING_CONVENTION)]
+        [DllImport(dll_file[System.Environment.OSVersion.Platform == System.PlatformID.Win32NT ? 0 : 1], CallingConvention=CALLING_CONVENTION)]
         internal static extern int wspp_ping(UIntPtr ws, byte[] data, ulong len);
-        [DllImport(dll_file, CallingConvention=CALLING_CONVENTION)]
+        [DllImport(dll_file[System.Environment.OSVersion.Platform == System.PlatformID.Win32NT ? 0 : 1], CallingConvention=CALLING_CONVENTION)]
         internal static extern void wspp_set_open_handler(UIntPtr ws, OnOpenCallback f);
-        [DllImport(dll_file, CallingConvention=CALLING_CONVENTION)]
+        [DllImport(dll_file[System.Environment.OSVersion.Platform == System.PlatformID.Win32NT ? 0 : 1], CallingConvention=CALLING_CONVENTION)]
         internal static extern void wspp_set_close_handler(UIntPtr ws, OnCloseCallback f);
-        [DllImport(dll_file, CallingConvention=CALLING_CONVENTION)]
+        [DllImport(dll_file[System.Environment.OSVersion.Platform == System.PlatformID.Win32NT ? 0 : 1], CallingConvention=CALLING_CONVENTION)]
         internal static extern void wspp_set_message_handler(UIntPtr ws, OnMessageCallback f);
-        [DllImport(dll_file, CallingConvention=CALLING_CONVENTION)]
+        [DllImport(dll_file[System.Environment.OSVersion.Platform == System.PlatformID.Win32NT ? 0 : 1], CallingConvention=CALLING_CONVENTION)]
         internal static extern void wspp_set_error_handler(UIntPtr ws, OnErrorCallback f);
-        [DllImport(dll_file, CallingConvention=CALLING_CONVENTION)]
+        [DllImport(dll_file[System.Environment.OSVersion.Platform == System.PlatformID.Win32NT ? 0 : 1], CallingConvention=CALLING_CONVENTION)]
         internal static extern void wspp_set_pong_handler(UIntPtr ws, OnPongCallback f);
 
         // NOTE: currently we do string -> UTF8 in C#, but it might be better to change that.
@@ -251,7 +255,7 @@ namespace WebSocketSharp
         /// </summary>
         static private UIntPtr wspp_new_from(string uriString, string dllDirectory)
         {
-            sdebug("wspp_new(\"" + uriString + "\") in " + dll_file + " from " + dllDirectory);
+            sdebug("wspp_new(\"" + uriString + "\") in " + dll_file[System.Environment.OSVersion.Platform == System.PlatformID.Win32NT ? 0 : 1] + " from " + dllDirectory);
 
             using (DllDirectory.Context(dllDirectory))
             {
