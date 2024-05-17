@@ -28,23 +28,23 @@ namespace WebSocketSharp
         internal const CallingConvention CALLING_CONVENTION = CallingConvention.Cdecl;
     #else
         internal const CallingConvention CALLING_CONVENTION = CallingConvention.Winapi;
-    #endif
+#endif
 
-    #if OS_WINDOWS
+#if OS_WINDOWS
         internal const string DLL_NAME = "c-wspp.dll";
-    #elif OS_MAC
-    #   error "Not implemented"
-    #elif OS_LINUX || OS_UNIX || OS_BSD
+#elif OS_MAC
+#error "Not implemented"
+#elif OS_LINUX || OS_UNIX || OS_BSD
         internal const string DLL_NAME = "c-wspp.so";
-    #else
-    #   error "Please define an OS_* macro"
-    #endif
+#else
+#error "Please define an OS_* macro"
+#endif
 
         internal static readonly string[] dll_file = new string[]
         {
             "c-wspp.dll",
             "c-wspp.so"
-        }
+        };
         /*{
             get
             {
