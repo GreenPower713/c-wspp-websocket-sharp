@@ -40,66 +40,100 @@ namespace WebSocketSharp
 #error "Please define an OS_* macro"
 #endif
 
-        internal static readonly string[] dll_file = new string[]
+        internal const string DLL_FILE_WIN = "c-wspp.dll";
+        internal const string DLL_FILE_LNX = "c-wspp.so";
+
+        internal const CallingConvention CALLING_CONVENTION_WIN = CallingConvention.Winapi;
+        internal const CallingConvention CALLING_CONVENTION_LNX = CallingConvention.Cdecl;
+
+        if (System.Environment.OSVersion.Platform != System.PlatformID.Win32NT)
         {
-            "c-wspp.dll",
-            "c-wspp.so"
-        };
-        /*{
-            get
-            {
-                if (System.Environment.OSVersion.Platform == System.PlatformID.Win32NT)
-                {
-                    return "c-wspp.dll";
-                }
-                else
-                {
-                    return "c-wspp.so";
-                }
-            }
-        }*/
+            [UnmanagedFunctionPointer(CALLING_CONVENTION_LNX)]
+            internal delegate void OnMessageCallback(IntPtr data, ulong len, int opCode);
+            [UnmanagedFunctionPointer(CALLING_CONVENTION_LNX)]
+            internal delegate void OnOpenCallback();
+            [UnmanagedFunctionPointer(CALLING_CONVENTION_LNX)]
+            internal delegate void OnCloseCallback(); // TODO: code, reason
+            [UnmanagedFunctionPointer(CALLING_CONVENTION_LNX)]
+            internal delegate void OnErrorCallback(IntPtr msg); // TODO: errorCode
+            [UnmanagedFunctionPointer(CALLING_CONVENTION_LNX)]
+            internal delegate void OnPongCallback(IntPtr data, ulong len);
 
-        [UnmanagedFunctionPointer(CALLING_CONVENTION)]
-        internal delegate void OnMessageCallback(IntPtr data, ulong len, int opCode);
-        [UnmanagedFunctionPointer(CALLING_CONVENTION)]
-        internal delegate void OnOpenCallback();
-        [UnmanagedFunctionPointer(CALLING_CONVENTION)]
-        internal delegate void OnCloseCallback(); // TODO: code, reason
-        [UnmanagedFunctionPointer(CALLING_CONVENTION)]
-        internal delegate void OnErrorCallback(IntPtr msg); // TODO: errorCode
-        [UnmanagedFunctionPointer(CALLING_CONVENTION)]
-        internal delegate void OnPongCallback(IntPtr data, ulong len);
+            [DllImport(DLL_FILE_LNX, CharSet=CharSet.Ansi, CallingConvention= CALLING_CONVENTION_LNX)]
+            internal static extern UIntPtr wspp_new(IntPtr uri);
+            [DllImport(DLL_FILE_LNX, CallingConvention= CALLING_CONVENTION_LNX)]
+            internal static extern void wspp_delete(UIntPtr ws);
+            [DllImport(DLL_FILE_LNX, CallingConvention= CALLING_CONVENTION_LNX)]
+            internal static extern ulong wspp_poll(UIntPtr ws);
+            [DllImport(DLL_FILE_LNX, CallingConvention = CALLING_CONVENTION_LNX)]
+            internal static extern ulong wspp_run(UIntPtr ws);
+            [DllImport(DLL_FILE_LNX, CallingConvention = CALLING_CONVENTION_LNX)]
+            internal static extern bool wspp_stopped(UIntPtr ws);
+            [DllImport(DLL_FILE_LNX, CallingConvention = CALLING_CONVENTION_LNX)]
+            internal static extern int wspp_connect(UIntPtr ws);
+            [DllImport(DLL_FILE_LNX, CallingConvention = CALLING_CONVENTION_LNX)]
+            internal static extern int wspp_close(UIntPtr ws, ushort code, IntPtr reason);
+            [DllImport(DLL_FILE_LNX, CallingConvention = CALLING_CONVENTION_LNX)]
+            internal static extern int wspp_send_text(UIntPtr ws, IntPtr message);
+            [DllImport(DLL_FILE_LNX, CallingConvention = CALLING_CONVENTION_LNX)]
+            internal static extern int wspp_send_binary(UIntPtr ws, byte[] data, ulong len);
+            [DllImport(DLL_FILE_LNX, CallingConvention = CALLING_CONVENTION_LNX)]
+            internal static extern int wspp_ping(UIntPtr ws, byte[] data, ulong len);
+            [DllImport(DLL_FILE_LNX, CallingConvention = CALLING_CONVENTION_LNX)]
+            internal static extern void wspp_set_open_handler(UIntPtr ws, OnOpenCallback f);
+            [DllImport(DLL_FILE_LNX, CallingConvention = CALLING_CONVENTION_LNX)]
+            internal static extern void wspp_set_close_handler(UIntPtr ws, OnCloseCallback f);
+            [DllImport(DLL_FILE_LNX, CallingConvention = CALLING_CONVENTION_LNX)]
+            internal static extern void wspp_set_message_handler(UIntPtr ws, OnMessageCallback f);
+            [DllImport(DLL_FILE_LNX, CallingConvention = CALLING_CONVENTION_LNX)]
+            internal static extern void wspp_set_error_handler(UIntPtr ws, OnErrorCallback f);
+            [DllImport(DLL_FILE_LNX, CallingConvention = CALLING_CONVENTION_LNX)]
+            internal static extern void wspp_set_pong_handler(UIntPtr ws, OnPongCallback f);
+        }
+        else
+        {
+            [UnmanagedFunctionPointer(CALLING_CONVENTION_WIN)]
+            internal delegate void OnMessageCallback(IntPtr data, ulong len, int opCode);
+            [UnmanagedFunctionPointer(CALLING_CONVENTION_WIN)]
+            internal delegate void OnOpenCallback();
+            [UnmanagedFunctionPointer(CALLING_CONVENTION_WIN)]
+            internal delegate void OnCloseCallback(); // TODO: code, reason
+            [UnmanagedFunctionPointer(CALLING_CONVENTION_WIN)]
+            internal delegate void OnErrorCallback(IntPtr msg); // TODO: errorCode
+            [UnmanagedFunctionPointer(CALLING_CONVENTION_WIN)]
+            internal delegate void OnPongCallback(IntPtr data, ulong len);
 
-        [DllImport(dll_file[System.Environment.OSVersion.Platform == System.PlatformID.Win32NT ? 0: 1], CharSet=CharSet.Ansi, CallingConvention=CALLING_CONVENTION)]
-        internal static extern UIntPtr wspp_new(IntPtr uri);
-        [DllImport(dll_file[System.Environment.OSVersion.Platform == System.PlatformID.Win32NT ? 0 : 1], CallingConvention=CALLING_CONVENTION)]
-        internal static extern void wspp_delete(UIntPtr ws);
-        [DllImport(dll_file[System.Environment.OSVersion.Platform == System.PlatformID.Win32NT ? 0 : 1], CallingConvention=CALLING_CONVENTION)]
-        internal static extern ulong wspp_poll(UIntPtr ws);
-        [DllImport(dll_file[System.Environment.OSVersion.Platform == System.PlatformID.Win32NT ? 0 : 1], CallingConvention=CALLING_CONVENTION)]
-        internal static extern ulong wspp_run(UIntPtr ws);
-        [DllImport(dll_file[System.Environment.OSVersion.Platform == System.PlatformID.Win32NT ? 0 : 1], CallingConvention=CALLING_CONVENTION)]
-        internal static extern bool wspp_stopped(UIntPtr ws);
-        [DllImport(dll_file[System.Environment.OSVersion.Platform == System.PlatformID.Win32NT ? 0 : 1], CallingConvention=CALLING_CONVENTION)]
-        internal static extern int wspp_connect(UIntPtr ws);
-        [DllImport(dll_file[System.Environment.OSVersion.Platform == System.PlatformID.Win32NT ? 0 : 1], CallingConvention=CALLING_CONVENTION)]
-        internal static extern int wspp_close(UIntPtr ws, ushort code, IntPtr reason);
-        [DllImport(dll_file[System.Environment.OSVersion.Platform == System.PlatformID.Win32NT ? 0 : 1], CallingConvention=CALLING_CONVENTION)]
-        internal static extern int wspp_send_text(UIntPtr ws, IntPtr message);
-        [DllImport(dll_file[System.Environment.OSVersion.Platform == System.PlatformID.Win32NT ? 0 : 1], CallingConvention=CALLING_CONVENTION)]
-        internal static extern int wspp_send_binary(UIntPtr ws, byte[] data, ulong len);
-        [DllImport(dll_file[System.Environment.OSVersion.Platform == System.PlatformID.Win32NT ? 0 : 1], CallingConvention=CALLING_CONVENTION)]
-        internal static extern int wspp_ping(UIntPtr ws, byte[] data, ulong len);
-        [DllImport(dll_file[System.Environment.OSVersion.Platform == System.PlatformID.Win32NT ? 0 : 1], CallingConvention=CALLING_CONVENTION)]
-        internal static extern void wspp_set_open_handler(UIntPtr ws, OnOpenCallback f);
-        [DllImport(dll_file[System.Environment.OSVersion.Platform == System.PlatformID.Win32NT ? 0 : 1], CallingConvention=CALLING_CONVENTION)]
-        internal static extern void wspp_set_close_handler(UIntPtr ws, OnCloseCallback f);
-        [DllImport(dll_file[System.Environment.OSVersion.Platform == System.PlatformID.Win32NT ? 0 : 1], CallingConvention=CALLING_CONVENTION)]
-        internal static extern void wspp_set_message_handler(UIntPtr ws, OnMessageCallback f);
-        [DllImport(dll_file[System.Environment.OSVersion.Platform == System.PlatformID.Win32NT ? 0 : 1], CallingConvention=CALLING_CONVENTION)]
-        internal static extern void wspp_set_error_handler(UIntPtr ws, OnErrorCallback f);
-        [DllImport(dll_file[System.Environment.OSVersion.Platform == System.PlatformID.Win32NT ? 0 : 1], CallingConvention=CALLING_CONVENTION)]
-        internal static extern void wspp_set_pong_handler(UIntPtr ws, OnPongCallback f);
+            [DllImport(DLL_FILE_WIN, CharSet = CharSet.Ansi, CallingConvention = CALLING_CONVENTION_WIN)]
+            internal static extern UIntPtr wspp_new(IntPtr uri);
+            [DllImport(DLL_FILE_WIN, CallingConvention = CALLING_CONVENTION_WIN)]
+            internal static extern void wspp_delete(UIntPtr ws);
+            [DllImport(DLL_FILE_WIN, CallingConvention = CALLING_CONVENTION_WIN)]
+            internal static extern ulong wspp_poll(UIntPtr ws);
+            [DllImport(DLL_FILE_WIN, CallingConvention = CALLING_CONVENTION_WIN)]
+            internal static extern ulong wspp_run(UIntPtr ws);
+            [DllImport(DLL_FILE_WIN, CallingConvention = CALLING_CONVENTION_WIN)]
+            internal static extern bool wspp_stopped(UIntPtr ws);
+            [DllImport(DLL_FILE_WIN, CallingConvention = CALLING_CONVENTION_WIN)]
+            internal static extern int wspp_connect(UIntPtr ws);
+            [DllImport(DLL_FILE_WIN, CallingConvention = CALLING_CONVENTION_WIN)]
+            internal static extern int wspp_close(UIntPtr ws, ushort code, IntPtr reason);
+            [DllImport(DLL_FILE_WIN, CallingConvention = CALLING_CONVENTION_WIN)]
+            internal static extern int wspp_send_text(UIntPtr ws, IntPtr message);
+            [DllImport(DLL_FILE_WIN, CallingConvention = CALLING_CONVENTION_WIN)]
+            internal static extern int wspp_send_binary(UIntPtr ws, byte[] data, ulong len);
+            [DllImport(DLL_FILE_WIN, CallingConvention = CALLING_CONVENTION_WIN)]
+            internal static extern int wspp_ping(UIntPtr ws, byte[] data, ulong len);
+            [DllImport(DLL_FILE_WIN, CallingConvention = CALLING_CONVENTION_WIN)]
+            internal static extern void wspp_set_open_handler(UIntPtr ws, OnOpenCallback f);
+            [DllImport(DLL_FILE_WIN, CallingConvention = CALLING_CONVENTION_WIN)]
+            internal static extern void wspp_set_close_handler(UIntPtr ws, OnCloseCallback f);
+            [DllImport(DLL_FILE_WIN, CallingConvention = CALLING_CONVENTION_WIN)]
+            internal static extern void wspp_set_message_handler(UIntPtr ws, OnMessageCallback f);
+            [DllImport(DLL_FILE_WIN, CallingConvention = CALLING_CONVENTION_WIN)]
+            internal static extern void wspp_set_error_handler(UIntPtr ws, OnErrorCallback f);
+            [DllImport(DLL_FILE_WIN, CallingConvention = CALLING_CONVENTION_WIN)]
+            internal static extern void wspp_set_pong_handler(UIntPtr ws, OnPongCallback f);
+        }
 
         // NOTE: currently we do string -> UTF8 in C#, but it might be better to change that.
         internal static IntPtr StringToHGlobalUTF8(string s, out int length)
